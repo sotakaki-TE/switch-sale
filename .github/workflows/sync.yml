@@ -1,0 +1,31 @@
+name: sync sale page
+
+on:
+  schedule:
+    - cron: '30 22 * * *'   # 07:30 JST (本体リポジトリの07:00更新の後)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch latest te.html from nintendo-sale-sorter
+        run: curl -fsSL -o docs/index.html https://raw.githubusercontent.com/sotakaki/nintendo-sale-sorter/main/docs/te.html
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "sync $(TZ=Asia/Tokyo date +%F_%H:%M)"
+          git push
