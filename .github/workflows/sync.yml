@@ -2,7 +2,7 @@ name: sync sale page
 
 on:
   schedule:
-    - cron: '30 22 * * *'   # 07:30 JST (本体リポジトリの07:00更新の後)
+    - cron: '0 16 * * *'   # 01:00 JST (本体リポジトリの00:30更新の後)
   workflow_dispatch:
 
 permissions:
