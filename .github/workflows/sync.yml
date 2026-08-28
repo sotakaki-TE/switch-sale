@@ -2,7 +2,8 @@ name: sync sale page
 
 on:
   schedule:
-    - cron: '0 16 * * *'   # 01:00 JST (本体リポジトリの00:30更新の後)
+    - cron: '45 16 * * *'  # 01:45 JST (本体00:23ビルドのcron遅延+実行25分を見込んで余裕を持つ)
+    - cron: '0 20 * * *'   # 05:00 JST (本体ビルドが大幅遅延した日のキャッチアップ)
   workflow_dispatch:
 
 permissions:
